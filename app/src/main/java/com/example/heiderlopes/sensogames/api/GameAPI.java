@@ -2,6 +2,7 @@ package com.example.heiderlopes.sensogames.api;
 
 
 import com.example.heiderlopes.sensogames.model.Game;
+import com.example.heiderlopes.sensogames.model.Health;
 
 import java.util.List;
 
@@ -17,5 +18,8 @@ public interface GameAPI {
 
     @POST("game/votar")
     public Call<Void> votar(@Body Game game);
+
+    @POST("game/votar")
+    public Call<Health> checkHealth();
 
 }

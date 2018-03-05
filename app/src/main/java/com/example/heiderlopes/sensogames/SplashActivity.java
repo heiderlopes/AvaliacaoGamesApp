@@ -3,12 +3,18 @@ package com.example.heiderlopes.sensogames;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.heiderlopes.sensogames.api.GameAPI;
+import com.example.heiderlopes.sensogames.api.NetworkHelper;
+import com.example.heiderlopes.sensogames.model.Health;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -35,8 +41,27 @@ public class SplashActivity extends AppCompatActivity {
             iv.startAnimation(anim);
         }
 
+        GameAPI service = NetworkHelper.getRetrofit().create(GameAPI.class);
 
-        new Handler().postDelayed(new Runnable() {
+        service.checkHealth().enqueue(new Callback<Health>() {
+            @Override
+            public void onResponse(Call<Health> call, Response<Health> response) {
+                Intent intent = new Intent(SplashActivity.this,
+                        LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+                SplashActivity.this.finish();
+            }
+
+            @Override
+            public void onFailure(Call<Health> call, Throwable t) {
+                Toast.makeText(SplashActivity.this,
+                        "Nao foi possível iniciar o aplicativo. Tente novamente", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Após o tempo definido irá executar a próxima tela
@@ -46,6 +71,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 SplashActivity.this.finish();
             }
-        }, SPLASH_DISPLAY_LENGTH);
+        }, SPLASH_DISPLAY_LENGTH);*/
     }
 }
