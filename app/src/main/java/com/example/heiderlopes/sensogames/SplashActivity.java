@@ -21,6 +21,9 @@ public class SplashActivity extends AppCompatActivity {
     //Tempo que nosso splashscreen ficará visivel
     private final int SPLASH_DISPLAY_LENGTH = 3500;
 
+    private final int TOTAL_TENTATIVAS = 3;
+    private final int totalTentativasRealizadas = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
         anim.reset();
 
         //Pegando o nosso objeto criado no layout
-        ImageView iv = (ImageView) findViewById(R.id.splash);
+        ImageView iv = findViewById(R.id.splash);
         if (iv != null) {
             iv.clearAnimation();
             iv.startAnimation(anim);
@@ -55,9 +58,13 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Health> call, Throwable t) {
-                Toast.makeText(SplashActivity.this,
-                        "Nao foi possível iniciar o aplicativo. Tente novamente", Toast.LENGTH_SHORT).show();
-                finish();
+                if (totalTentativasRealizadas > TOTAL_TENTATIVAS) {
+                    Toast.makeText(SplashActivity.this,
+                            "Nao foi possível iniciar o aplicativo. Tente novamente", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    carregar();
+                }
             }
         });
 

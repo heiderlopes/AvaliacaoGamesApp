@@ -35,6 +35,8 @@ public class VotacaoActivity extends AppCompatActivity {
 
     private Game game;
 
+    private TextView tvMensagemLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class VotacaoActivity extends AppCompatActivity {
         sbGrafico = findViewById(R.id.sbGrafico);
         rbGrafico = findViewById(R.id.rbGrafico);
 
+        tvMensagemLoading = findViewById(R.id.tvMensagemLoading);
+
         btVotar = findViewById(R.id.btVotar);
 
         setListener();
@@ -69,6 +73,7 @@ public class VotacaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showProgressDialog();
+                tvMensagemLoading.setText("Realizando a votação. Aguarde!!!");
                 GameAPI service = NetworkHelper.getRetrofit().create(GameAPI.class);
 
                 game.setPontuacaoGrafico(sbGrafico.getProgress());
